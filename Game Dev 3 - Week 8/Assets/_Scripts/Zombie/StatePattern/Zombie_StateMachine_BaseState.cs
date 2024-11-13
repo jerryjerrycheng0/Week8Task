@@ -18,5 +18,8 @@ namespace GameDevWithMarco.StatePattern
         public abstract void OnCollisionEnter(Zombie_StateMachine_Manager stateMachineManager, Collision collision);
 
         public abstract void OnTriggerEnter(Zombie_StateMachine_Manager stateMachineManager, Collider collider);
+
+        public abstract void OnCollisionExit(Zombie_StateMachine_Manager stateMachineManager, Collision collision);
+
     }
 }

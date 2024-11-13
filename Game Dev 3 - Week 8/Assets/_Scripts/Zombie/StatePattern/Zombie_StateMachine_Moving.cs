@@ -23,17 +23,28 @@ namespace GameDevWithMarco.StatePattern
 
         public override void UpdateState(Zombie_StateMachine_Manager stateMachineManager)
         {
-            
+            if (stateMachineManager.zombieAiScript.isChasing == false)
+            {
+                stateMachineManager.SwitchState(stateMachineManager.idleState);
+            }
         }
 
         public override void OnCollisionEnter(Zombie_StateMachine_Manager stateMachineManager, Collision collision)
         {
-
+            if (collision.gameObject.tag == "Player")
+            {
+                stateMachineManager.SwitchState(stateMachineManager.attackState);
+            }
         }
 
         public override void OnTriggerEnter(Zombie_StateMachine_Manager stateMachineManager, Collider collider)
         {
 
+        }
+
+        public override void OnCollisionExit(Zombie_StateMachine_Manager stateMachineManager, Collision collision)
+        {
+            
         }
     }
 }

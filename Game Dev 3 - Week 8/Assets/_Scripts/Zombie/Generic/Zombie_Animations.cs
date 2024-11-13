@@ -51,7 +51,6 @@ namespace GameDevWithMarco.Enemy
 
             anim.Play(animationName);                               //Playes the animation we have picked
 
-            Debug.Log("The name of the currently played animation is: " + animationName);
         }
 
         public void PlayIdleAnimation()

@@ -1,5 +1,7 @@
 using UnityEngine;
 using GameDevWithMarco.Enemy;
+using Unity.VisualScripting;
+using Unity.PlasticSCM.Editor.WebApi;
 
 namespace GameDevWithMarco.StatePattern
 {
@@ -17,7 +19,7 @@ namespace GameDevWithMarco.StatePattern
         //These variables will store references to the script that manage each state 
         public Zombie_StateMachine_IdleState idleState = new Zombie_StateMachine_IdleState();
         public Zombie_StateMachine_Moving movingState = new Zombie_StateMachine_Moving();
-
+        public Zombie_StateMachine_AttackState attackState = new Zombie_StateMachine_AttackState();
 
         //Variables to manage animations
         public Zombie_Animations animScript;
@@ -34,6 +36,35 @@ namespace GameDevWithMarco.StatePattern
             animScript = GetComponent<Zombie_Animations>();         //Finds the Animator        
             zombieAiScript = GetComponent<Zombie_Ai>();             //Will find the ai script        
             zombieParent = GetComponent<Zombie_Parent>();           //Will find the parent script
+
+            currentState = idleState;
+            currentState?.EnterState(this);
+        }
+
+        public void Update()
+        {
+            currentState.UpdateState(this);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            currentState.OnCollisionEnter(this, collision);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            currentState.OnTriggerEnter(this, other);
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            currentState?.OnCollisionExit(this, collision);
+        }
+
+        public void SwitchState(Zombie_StateMachine_BaseState stateWeWantToUse)
+        {
+            currentState = stateWeWantToUse;
+            currentState?.EnterState(this); 
         }
     }
 }
