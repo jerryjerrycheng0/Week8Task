@@ -1,23 +1,13 @@
 using UnityEngine;
 
-
 namespace GameDevWithMarco.Player
 {
     public class Player_Movement : MonoBehaviour
     {
-        /// <summary>
-        /// Car controls borrowed and adapted from:
-        /// https://www.youtube.com/watch?v=cqATTzJmFDY
-        /// 
-        /// More interesting concepts in this video if you want to expand:
-        /// https://www.youtube.com/watch?v=CBgtU9FCEh8
-        /// The controls need to be tweaked and expanded to dit your needs!
-        /// </summary>
-
-        //Reference to the sphere's rigidbody
+        // Reference to the sphere's rigidbody
         public Rigidbody sphereRb;
 
-        //Car driving variables
+        // Car driving variables
         public float forwardAccell = 8f;
         public float reverseAccel = 4f;
         public float maxSpeed;
@@ -25,26 +15,40 @@ namespace GameDevWithMarco.Player
         public float gravityForce = 10f;
         private float dragOnValue = 3f;
 
-
-        //Grounded Variables
+        // Grounded Variables
         public bool grounded;
         public LayerMask whatIsGround;
         public float groundRayLenght = 0.5f;
         public Transform groundRayPoint;
 
-
-        //Inputs for controls
+        // Inputs for controls
         public float speedInput;
         public float turnInput;
 
-        //Wheels variables
+        // Wheels variables
         public Transform leftFrontWheel, rightFrontWheel;
         public float maxWheelTurn = 25f;
+
+        // Audio variables
+        [SerializeField] AudioSource carMoveAudio;   // Reference to the AudioSource component
+        [SerializeField] AudioClip carMoveClip;      // Reference to the car move sound clip
 
         // Start is called before the first frame update
         void Start()
         {
             sphereRb.transform.parent = null;
+
+            // Ensure the audio source is set up correctly
+            if (carMoveAudio == null)
+            {
+                carMoveAudio = GetComponent<AudioSource>();
+                carMoveAudio.pitch = 1f;
+            }
+
+            if (carMoveClip != null)
+            {
+                carMoveAudio.clip = carMoveClip;
+            }
         }
 
         // Update is called once per frame
@@ -60,14 +64,14 @@ namespace GameDevWithMarco.Player
             WheelsRotation();
 
             SetPositionToBeSameAsSphere();
+
+            // Check if the player is moving (either forward or backward)
+            HandleMovementAudio();
         }
-
-
 
         private void FixedUpdate()
         {
             GroundCheck();
-
 
             if (grounded)
             {
@@ -81,8 +85,7 @@ namespace GameDevWithMarco.Player
 
         public void PushCarDownToGround()
         {
-            sphereRb.drag = 0.1f;       //Reduces the drag thus making us continue to move in the air
-
+            sphereRb.drag = 0.1f; // Reduces the drag, making the car continue to move in the air
             sphereRb.AddForce(Vector3.up * -gravityForce * 1000);
         }
 
@@ -95,8 +98,7 @@ namespace GameDevWithMarco.Player
             {
                 grounded = true;
 
-
-                //Adjusts the car rotation to match the slope we are going up and down to
+                // Adjusts the car rotation to match the slope
                 transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
             }
         }
@@ -109,14 +111,13 @@ namespace GameDevWithMarco.Player
 
         private void AccelleratioForce()
         {
-            sphereRb.drag = dragOnValue;    //Restores the drag to the original value
+            sphereRb.drag = dragOnValue; // Restores the drag to the original value
 
             if (Mathf.Abs(speedInput) > 0)
             {
                 sphereRb.AddForce(transform.forward * speedInput);
             }
         }
-
 
         private void SetPositionToBeSameAsSphere()
         {
@@ -126,7 +127,6 @@ namespace GameDevWithMarco.Player
         public void Turning()
         {
             turnInput = Input.GetAxis("Horizontal");
-
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * turnSrenght * Time.deltaTime * Input.GetAxis("Vertical"), 0f));
         }
 
@@ -136,12 +136,33 @@ namespace GameDevWithMarco.Player
 
             if (Input.GetAxis("Vertical") > 0)
             {
-                speedInput = Input.GetAxis("Vertical") * forwardAccell * 1000;
+                speedInput = Input.GetAxis("Vertical") * forwardAccell * 500;
             }
             else if (Input.GetAxis("Vertical") < 0)
             {
-                speedInput = Input.GetAxis("Vertical") * reverseAccel * 1000;
+                speedInput = Input.GetAxis("Vertical") * reverseAccel * 500;
             }
         }
+
+        // Handle movement audio (playing when moving, stopping when idle)
+        private void HandleMovementAudio()
+        {
+            if (Mathf.Abs(speedInput) > 0 && !carMoveAudio.isPlaying)
+            {
+                // Play the sound if the player starts moving and the sound isn't already playing
+                carMoveAudio.Play();
+            }
+            else if (Mathf.Abs(speedInput) == 0 && carMoveAudio.isPlaying)
+            {
+                // Stop the sound if the player stops moving
+                carMoveAudio.Stop();
+            }
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                carMoveAudio.pitch = 1.5f;
+            }
+        }
+
     }
 }
