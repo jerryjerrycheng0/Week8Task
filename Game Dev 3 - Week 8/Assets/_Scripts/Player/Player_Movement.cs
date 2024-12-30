@@ -20,22 +20,22 @@ namespace GameDevWithMarco.Player
         //Car driving variables
         public float forwardAccell = 8f;
         public float reverseAccel = 4f;
-        public float maxSpeed = 50f;
+        public float maxSpeed;
         public float turnSrenght = 180f;
         public float gravityForce = 10f;
         private float dragOnValue = 3f;
 
 
         //Grounded Variables
-        private bool grounded;
+        public bool grounded;
         public LayerMask whatIsGround;
         public float groundRayLenght = 0.5f;
         public Transform groundRayPoint;
 
 
         //Inputs for controls
-        float speedInput;
-        float turnInput;
+        public float speedInput;
+        public float turnInput;
 
         //Wheels variables
         public Transform leftFrontWheel, rightFrontWheel;
@@ -79,7 +79,7 @@ namespace GameDevWithMarco.Player
             }
         }
 
-        private void PushCarDownToGround()
+        public void PushCarDownToGround()
         {
             sphereRb.drag = 0.1f;       //Reduces the drag thus making us continue to move in the air
 
@@ -123,14 +123,14 @@ namespace GameDevWithMarco.Player
             transform.position = sphereRb.transform.position;
         }
 
-        private void Turning()
+        public void Turning()
         {
             turnInput = Input.GetAxis("Horizontal");
 
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0f, turnInput * turnSrenght * Time.deltaTime * Input.GetAxis("Vertical"), 0f));
         }
 
-        private void AccellerationDecelleration()
+        public void AccellerationDecelleration()
         {
             speedInput = 0;
 
