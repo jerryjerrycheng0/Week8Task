@@ -1,5 +1,6 @@
 using UnityEngine;
 using GameDevWithMarco.Player;
+using GameDevWithMarco.UI;
 
 namespace GameDevWithMarco.Enemy
 {
@@ -57,5 +58,15 @@ namespace GameDevWithMarco.Enemy
                 Destroy(gameObject);
             }
         }
+
+        private void OnDestroy()
+        {
+            var zombieCountUI = FindObjectOfType<UIManager>();
+            if (zombieCountUI != null)
+            {
+                zombieCountUI.DecrementZombieCount();
+            }
+        }
+
     }
 }

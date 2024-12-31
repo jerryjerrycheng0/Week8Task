@@ -1,21 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameDevWithMarco
+namespace GameDevWithMarco.Interfaces
 {
-    public class ICollectables : MonoBehaviour
+    public interface ICollectable
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        void Collect(GameObject player);
     }
 }

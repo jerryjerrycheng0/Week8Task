@@ -7,6 +7,8 @@ TagManager:
   - Zombie
   - Bullet
   - Buildings
+  - Ground
+  - PlayerParts
   layers:
   - Default
   - TransparentFX

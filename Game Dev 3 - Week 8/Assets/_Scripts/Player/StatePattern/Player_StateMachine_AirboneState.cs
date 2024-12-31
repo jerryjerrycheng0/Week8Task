@@ -32,12 +32,12 @@ namespace GameDevWithMarco.StatePattern
 
         public override void OnTriggerEnter(Player_StateMachine_Manager manager, Collider other)
         {
-            // Handle airborne-specific triggers (e.g., flying through a checkpoint)
+            // Handle airborne-specific triggers
         }
 
         public override void OnCollisionExit(Player_StateMachine_Manager manager, Collision collision)
         {
-            // Handle collision exit while airborne (e.g., leaving a surface mid-jump)
+            // Handle collision exit while airborne
         }
 
         public override void ExitState(Player_StateMachine_Manager manager)
