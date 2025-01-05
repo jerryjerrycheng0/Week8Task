@@ -10,6 +10,7 @@ namespace GameDevWithMarco.StatePattern
         public Player_StateMachine_IdleState idleState = new Player_StateMachine_IdleState();
         public Player_StateMachine_MovingState movingState = new Player_StateMachine_MovingState();
         public Player_StateMachine_DashState dashState = new Player_StateMachine_DashState();
+        public Player_StateMachine_AirborneState airboneState = new Player_StateMachine_AirborneState();
 
         public Player_Movement playerMovement;
 
@@ -49,7 +50,7 @@ namespace GameDevWithMarco.StatePattern
 
         public void SwitchState(Player_StateMachine_BaseState newState)
         {
-            currentState.ExitState(this); // Optional: Call ExitState if implemented
+            currentState.ExitState(this);
             currentState = newState;
             currentState.EnterState(this);
         }

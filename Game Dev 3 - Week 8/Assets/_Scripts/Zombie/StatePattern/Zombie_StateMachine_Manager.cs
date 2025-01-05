@@ -1,7 +1,5 @@
 using UnityEngine;
 using GameDevWithMarco.Enemy;
-using Unity.VisualScripting;
-using Unity.PlasticSCM.Editor.WebApi;
 
 namespace GameDevWithMarco.StatePattern
 {
